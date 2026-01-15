@@ -25,3 +25,10 @@ resilience4j:
         sliding-window-size: 10
         minimum-number-of-calls: 5
         wait-duration-in-open-state: 10s
+  
+  management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
