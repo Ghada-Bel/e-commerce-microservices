@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: product-microservice
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+# === Resilience4j configuration ===
+resilience4j:
+  retry:
+    instances:
+      myRetry:
+        max-attempts: 3
+        wait-duration: 500ms
+  rate-limiter:
+    instances:
+      myRateLimiter:
+        limit-for-period: 5
+        limit-refresh-period: 1s
+        timeout-duration: 500ms
+  circuitbreaker:
+    instances:
+      productmicroService:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+
+# === Monitoring & tracing ===
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"         # expose all endpoints, including /actuator/prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true        # enable Prometheus metrics
+  tracing:
+    sampling:
+      probability: 1.0       # trace all requests (if Zipkin is used)
+
+zipkin:
+  endpoint: http://localhost:9411/api/v2/spans
