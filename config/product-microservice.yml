@@ -44,3 +44,14 @@ management:
 
 zipkin:
   endpoint: http://localhost:9411/api/v2/spans
+
+# ===========================
+# Ribbon configuration (client side)
+# ===========================
+user-microservice:
+  ribbon:
+    eureka:
+      enabled: false               # we use static list for TP
+    listOfServers: localhost:8082,localhost:8083
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
